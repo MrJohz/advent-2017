@@ -1,7 +1,8 @@
 #![feature(conservative_impl_trait)]
 #![feature(iterator_step_by)]
+#![feature(inclusive_range_syntax)]
 
-const LOCATION: usize = 15; //include!("inputs/day3.txt");
+const LOCATION: usize = include!("inputs/day3.txt");
 
 #[derive(Debug)]
 struct Cartesian {
@@ -18,7 +19,7 @@ struct Rotatory {
 
 impl Rotatory {
     fn new_from_int(location: usize) -> Self {
-        let (min, max, depth)  = {
+        let (min, max, depth) = {
             let mut min = 0;
             let mut max = 0;
             let mut depth = 0;
@@ -53,7 +54,9 @@ impl Rotatory {
 
     fn new_from_coordinates(circle: usize, side: usize, height: usize) -> Self {
         Self {
-            circle, side, height
+            circle,
+            side,
+            height,
         }
     }
 
@@ -109,8 +112,38 @@ fn main() {
 
     println!("{:?}", coords.as_int());
 
-    for i in 1..20 {
+    let array_shift = 8;
+    let mut array = [[0; 16]; 16];
+
+    array[array_shift as usize][array_shift as usize] = 1;
+
+    for i in 2..200 {
         let rotary = Rotatory::new_from_int(i);
-        println!("{:?} -> {:?} -> {:?}", i, rotary, rotary.as_cartesian());
+        let cartesian = rotary.as_cartesian();
+
+        let mut sum = 0;
+        for x_shift in -1.. = 1 {
+            let x_coord = (cartesian.x + x_shift + array_shift) as usize;
+            for y_shift in -1.. = 1 {
+                let y_coord = (cartesian.y + y_shift + array_shift) as usize;
+                sum += array[x_coord][y_coord];
+            }
+        }
+
+        array[(cartesian.x + array_shift) as usize][(cartesian.y + array_shift) as usize] = sum;
+
+        for row in array.iter() {
+            for elem in row.iter() {
+                print!("{:^7}", elem);
+            }
+            println!();
+        }
+
+        if sum > LOCATION {
+            println!("FINAL SUM: {:?}", sum);
+            break;
+        }
+
+        println!("-----------------");
     }
 }
