@@ -1,0 +1,7 @@
+[package]
+authors = ["Jonathan <jonathan.frere@gmail.com>"]
+name = "advent2017"
+version = "0.1.0"
+
+[dependencies]
+itertools = "0.7.4"
